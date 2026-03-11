@@ -52,8 +52,6 @@ jobs:
         run: |
           echo "${{ secrets.SANDBOX_USERS_CSV }}" > testData/sandbox/users.csv
           echo "${{ secrets.STAGE_USERS_CSV }}" > testData/stage/users.csv
-          echo "${{ secrets.SANDBOX_ENV_PROPERTIES }}" > testData/sandbox/env.properties
-          echo "${{ secrets.STAGE_ENV_PROPERTIES }}" > testData/stage/env.properties
 
       - name: Install Playwright browsers
         run: |
@@ -112,8 +110,6 @@ jobs:
         run: |
           echo "${{ secrets.SANDBOX_USERS_CSV }}" > testData/sandbox/users.csv
           echo "${{ secrets.STAGE_USERS_CSV }}" > testData/stage/users.csv
-          echo "${{ secrets.SANDBOX_ENV_PROPERTIES }}" > testData/sandbox/env.properties
-          echo "${{ secrets.STAGE_ENV_PROPERTIES }}" > testData/stage/env.properties
 
       - name: Install Playwright browsers (Chromium)
         run: npx playwright install --with-deps chromium
@@ -154,8 +150,6 @@ jobs:
         run: |
           echo "${{ secrets.SANDBOX_USERS_CSV }}" > testData/sandbox/users.csv
           echo "${{ secrets.STAGE_USERS_CSV }}" > testData/stage/users.csv
-          echo "${{ secrets.SANDBOX_ENV_PROPERTIES }}" > testData/sandbox/env.properties
-          echo "${{ secrets.STAGE_ENV_PROPERTIES }}" > testData/stage/env.properties
 
       - name: Install Playwright (no browsers needed for API)
         run: npx playwright install --with-deps chromium

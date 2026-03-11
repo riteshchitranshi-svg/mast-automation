@@ -13,7 +13,6 @@ allure-report/
 
 # Credentials — never commit real test data
 testData/**/users.csv
-testData/**/env.properties
 
 # Environment variable files
 .env
