@@ -82,3 +82,26 @@ jobs:
           name: test-results-${{ github.event.inputs.browser || 'chromium' }}-${{ env.TEST_ENV }}
           path: test-results/
           retention-days: 30
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        if: always() && github.event_name != 'pull_request'
+        with:
+          path: playwright-report/
+
+  deploy:
+    name: Deploy Report to GitHub Pages
+    needs: playwright-tests
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

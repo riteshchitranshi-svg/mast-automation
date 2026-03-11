@@ -7,6 +7,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ---
 
 ## [2026-03-11]
+### Added
+- GitHub Pages deployment job in `.github/workflows/playwright.yml` — publishes the latest Playwright HTML report to GitHub Pages after every push to `main`/`develop`
+
 ### Removed
 - Deleted entire `features/` directory (feature files, step definitions, Cucumber world and hooks)
 - Deleted `cucumber.js` configuration file
