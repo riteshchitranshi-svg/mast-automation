@@ -67,6 +67,14 @@ jobs:
           TEST_ENV: ${{ env.TEST_ENV }}
           CI: true
 
+      - name: Upload Playwright HTML report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report-${{ github.event.inputs.browser || 'chromium' }}-${{ env.TEST_ENV }}
+          path: playwright-report/
+          retention-days: 30
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         if: always() && github.event_name != 'pull_request'
