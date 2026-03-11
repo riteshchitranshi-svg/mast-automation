@@ -1,0 +1,7 @@
+key,email,password
+valid_user,ritesh.chitranshi@thetipton.co.uk,SureshShail@2415
+invalid_user,notauser@example.com,wrongpassword
+valid_email_wrong_pass,ritesh.chitranshi@thetipton.co.uk,wrongpassword
+empty_both,,
+valid_email_no_pass,ritesh.chitranshi@thetipton.co.uk,
+no_email_valid_pass,,SandboxP@ss1

@@ -1,0 +1,7 @@
+key,email,password
+valid_user,stage-user@usemast.com,StageP@ss1
+invalid_user,notauser@example.com,wrongpassword
+valid_email_wrong_pass,stage-user@usemast.com,wrongpassword
+empty_both,,
+valid_email_no_pass,stage-user@usemast.com,
+no_email_valid_pass,,StageP@ss1

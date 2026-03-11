@@ -11,8 +11,8 @@ reports/
 allure-results/
 allure-report/
 
-# Credentials — never commit real test data
-testData/**/users.csv
+# Credentials — move to GitHub Secrets before going to production
+# testData/**/users.csv
 
 # Environment variable files
 .env
