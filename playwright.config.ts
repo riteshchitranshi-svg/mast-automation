@@ -18,7 +18,6 @@ export default defineConfig({
     baseURL: baseUrl,
     trace: 'on',
     screenshot: 'only-on-failure',
-    video: 'on-first-retry',
     actionTimeout: timeout,
   },
   projects: [
