@@ -48,11 +48,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Write test credentials from secrets
-        run: |
-          echo "${{ secrets.SANDBOX_USERS_CSV }}" > testData/sandbox/users.csv
-          echo "${{ secrets.STAGE_USERS_CSV }}" > testData/stage/users.csv
-
       - name: Install Playwright browsers
         run: |
           if [ "${{ github.event.inputs.browser }}" = "all" ] || [ -z "${{ github.event.inputs.browser }}" ]; then
@@ -86,84 +81,4 @@ jobs:
         with:
           name: test-results-${{ github.event.inputs.browser || 'chromium' }}-${{ env.TEST_ENV }}
           path: test-results/
-          retention-days: 30
-
-  cucumber-tests:
-    name: Cucumber BDD Tests
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Write test credentials from secrets
-        run: |
-          echo "${{ secrets.SANDBOX_USERS_CSV }}" > testData/sandbox/users.csv
-          echo "${{ secrets.STAGE_USERS_CSV }}" > testData/stage/users.csv
-
-      - name: Install Playwright browsers (Chromium)
-        run: npx playwright install --with-deps chromium
-
-      - name: Run Cucumber BDD tests
-        run: npm run cucumber
-        env:
-          TEST_ENV: ${{ env.TEST_ENV }}
-          CI: true
-
-      - name: Upload Cucumber reports
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: cucumber-report-${{ env.TEST_ENV }}
-          path: reports/
-          retention-days: 30
-
-  api-tests:
-    name: API Tests
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Write test credentials from secrets
-        run: |
-          echo "${{ secrets.SANDBOX_USERS_CSV }}" > testData/sandbox/users.csv
-          echo "${{ secrets.STAGE_USERS_CSV }}" > testData/stage/users.csv
-
-      - name: Install Playwright (no browsers needed for API)
-        run: npx playwright install --with-deps chromium
-
-      - name: Run API tests
-        run: npx playwright test src/api/specs/ --project=chromium
-        env:
-          TEST_ENV: ${{ env.TEST_ENV }}
-          CI: true
-
-      - name: Upload API test report
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: api-test-report-${{ env.TEST_ENV }}
-          path: playwright-report/
           retention-days: 30

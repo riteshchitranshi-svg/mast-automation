@@ -6,6 +6,15 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2026-03-11]
+### Removed
+- Deleted entire `features/` directory (feature files, step definitions, Cucumber world and hooks)
+- Deleted `cucumber.js` configuration file
+- Removed `@cucumber/cucumber` and `@cucumber/pretty-formatter` devDependencies from `package.json`
+- Removed `cucumber`, `cucumber:headed`, `cucumber:firefox`, `cucumber:webkit`, `cucumber:tags` scripts from `package.json`
+- Removed `cucumber-tests` job from `.github/workflows/playwright.yml`
+- Removed `api-tests` job from `.github/workflows/playwright.yml`
+
 ## [Unreleased]
 
 ---

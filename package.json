@@ -10,20 +10,13 @@
     "test:chromium": "playwright test --project=chromium",
     "test:firefox": "playwright test --project=firefox",
     "test:webkit": "playwright test --project=webkit",
-    "report": "playwright show-report",
-    "cucumber": "cucumber-js",
-    "cucumber:headed": "HEADLESS=false cucumber-js",
-    "cucumber:firefox": "BROWSER=firefox cucumber-js",
-    "cucumber:webkit": "BROWSER=webkit cucumber-js",
-    "cucumber:tags": "cucumber-js --tags"
+    "report": "playwright show-report"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "@cucumber/cucumber": "^12.7.0",
-    "@cucumber/pretty-formatter": "^3.2.0",
     "@playwright/test": "^1.58.2",
     "@types/node": "^25.3.5",
     "csv-parse": "^6.1.0",
