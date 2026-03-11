@@ -1,7 +1,11 @@
 module.exports = {
   default: {
     paths: ['features/**/*.feature'],
-    require: ['features/support/world.ts', 'features/support/hooks.ts', 'features/step-definitions/**/*.ts'],
+    require: [
+      'features/support/world.ts',
+      'features/support/hooks.ts',
+      'features/step-definitions/**/*.ts',
+    ],
     requireModule: ['ts-node/register'],
     format: [
       'progress-bar',

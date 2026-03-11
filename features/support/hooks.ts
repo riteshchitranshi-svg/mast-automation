@@ -1,4 +1,4 @@
-import { Before, After, AfterStep, Status, ITestCaseHookParameter } from '@cucumber/cucumber';
+import { Before, BeforeAll, After, AfterStep, Status, ITestCaseHookParameter } from '@cucumber/cucumber';
 import { CustomWorld } from './world';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -18,13 +18,13 @@ After(async function (this: CustomWorld, { result }: ITestCaseHookParameter) {
   if (result?.status === Status.FAILED) {
     // Capture page HTML on failure for debugging
     const html = await this.page.content();
-    this.attach(html, 'text/html');
+    this.attach(html, 'text/html');<
   }
   await this.teardown();
 });
 
 // Ensure reports directory exists before any scenario runs
-Before({ order: 0 }, async function () {
+BeforeAll(async function () {
   const reportsDir = path.join(process.cwd(), 'reports');
   if (!fs.existsSync(reportsDir)) {
     fs.mkdirSync(reportsDir, { recursive: true });

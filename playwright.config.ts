@@ -1,20 +1,25 @@
 import { defineConfig, devices } from '@playwright/test';
+import { loadEnvConfig } from './src/utils/env-config';
+
+const { baseUrl, timeout } = loadEnvConfig();
 
 export default defineConfig({
-  testDir: './tests',
+  testDir: './src',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  workers: 
+  process.env.CI ? 1 : undefined,
   reporter: [
     ['html', { outputFolder: 'playwright-report', open: 'never' }],
     ['list'],
   ],
   use: {
-    baseURL: process.env.BASE_URL || 'https://example.com',
-    trace: 'on-first-retry',
+    baseURL: baseUrl,
+    trace: 'on',
     screenshot: 'only-on-failure',
     video: 'on-first-retry',
+    actionTimeout: timeout,
   },
   projects: [
     {

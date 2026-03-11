@@ -1,0 +1,154 @@
+name: Playwright Tests
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target environment'
+        required: true
+        default: 'sandbox'
+        type: choice
+        options:
+          - sandbox
+          - stage
+      browser:
+        description: 'Browser to run tests on'
+        required: true
+        default: 'chromium'
+        type: choice
+        options:
+          - chromium
+          - firefox
+          - webkit
+          - all
+
+env:
+  TEST_ENV: ${{ github.event.inputs.environment || 'sandbox' }}
+
+jobs:
+  playwright-tests:
+    name: Playwright UI Tests (${{ github.event.inputs.browser || 'chromium' }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: |
+          if [ "${{ github.event.inputs.browser }}" = "all" ] || [ -z "${{ github.event.inputs.browser }}" ]; then
+            npx playwright install --with-deps
+          else
+            npx playwright install --with-deps ${{ github.event.inputs.browser || 'chromium' }}
+          fi
+
+      - name: Run Playwright tests
+        run: |
+          if [ "${{ github.event.inputs.browser }}" = "all" ] || [ -z "${{ github.event.inputs.browser }}" ]; then
+            npx playwright test src/ui/specs/
+          else
+            npx playwright test src/ui/specs/ --project=${{ github.event.inputs.browser || 'chromium' }}
+          fi
+        env:
+          TEST_ENV: ${{ env.TEST_ENV }}
+          CI: true
+
+      - name: Upload Playwright HTML report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report-${{ github.event.inputs.browser || 'chromium' }}-${{ env.TEST_ENV }}
+          path: playwright-report/
+          retention-days: 30
+
+      - name: Upload test results (traces, screenshots, videos)
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results-${{ github.event.inputs.browser || 'chromium' }}-${{ env.TEST_ENV }}
+          path: test-results/
+          retention-days: 30
+
+  cucumber-tests:
+    name: Cucumber BDD Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers (Chromium)
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Cucumber BDD tests
+        run: npm run cucumber
+        env:
+          TEST_ENV: ${{ env.TEST_ENV }}
+          CI: true
+
+      - name: Upload Cucumber reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cucumber-report-${{ env.TEST_ENV }}
+          path: reports/
+          retention-days: 30
+
+  api-tests:
+    name: API Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright (no browsers needed for API)
+        run: npx playwright install --with-deps chromium
+
+      - name: Run API tests
+        run: npx playwright test src/api/specs/ --project=chromium
+        env:
+          TEST_ENV: ${{ env.TEST_ENV }}
+          CI: true
+
+      - name: Upload API test report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: api-test-report-${{ env.TEST_ENV }}
+          path: playwright-report/
+          retention-days: 30

@@ -1,0 +1,7 @@
+key,email,password
+valid_user,your-stage-email@example.com,YourPassword
+invalid_user,notauser@example.com,wrongpassword
+valid_email_wrong_pass,your-stage-email@example.com,wrongpassword
+empty_both,,
+valid_email_no_pass,your-stage-email@example.com,
+no_email_valid_pass,,YourPassword

@@ -8,6 +8,9 @@ import {
   webkit,
   LaunchOptions,
 } from '@playwright/test';
+import { LoginPage } from '../../src/ui/pages/auth/LoginPage';
+import { ForgotPasswordPage } from '../../src/ui/pages/auth/ForgotPasswordPage';
+import { loadEnvConfig } from '../../src/utils/env-config';
 
 export interface ICustomWorld extends World {
   browser: Browser;
@@ -19,6 +22,29 @@ export class CustomWorld extends World implements ICustomWorld {
   browser!: Browser;
   context!: BrowserContext;
   page!: Page;
+
+  // Page object instances — initialised in Given steps, reused across When/Then
+  loginPage!: LoginPage;
+  forgotPasswordPage!: ForgotPasswordPage;
+
+  // Generic key-value store for all scenario-scoped data.
+  // Use set()/get() to pass any value between steps without declaring new properties.
+  private _store: Record<string, unknown> = {};
+
+  set<T>(key: string, value: T): void {
+    this._store[key] = value;
+  }
+
+  get<T>(key: string): T {
+    if (!(key in this._store)) {
+      throw new Error(`No value stored for key "${key}" in scenario store`);
+    }
+    return this._store[key] as T;
+  }
+
+  has(key: string): boolean {
+    return key in this._store;
+  }
 
   constructor(options: IWorldOptions) {
     super(options);
@@ -37,8 +63,9 @@ export class CustomWorld extends World implements ICustomWorld {
       this.browser = await chromium.launch(launchOptions);
     }
 
+    const { baseUrl } = loadEnvConfig();
     this.context = await this.browser.newContext({
-      baseURL: process.env.BASE_URL || 'https://example.com',
+      baseURL: baseUrl,
       viewport: { width: 1280, height: 720 },
     });
 
