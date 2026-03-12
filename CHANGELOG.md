@@ -6,6 +6,14 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2026-03-12]
+### Added
+- `README.md` — project architecture documentation covering tech stack, directory structure, architecture layers, environment configuration, test data, running tests, domain onboarding checklist, file naming conventions, and key rules
+- `README.md` — added Prerequisites and Setup section (clone, install dependencies, install Playwright browsers, configure test data, verify setup)
+
+### Changed
+- `README.md` — removed all Cucumber JS references (tech stack, project structure, architecture diagram, BDD layer section, running tests, new domain checklist, file naming conventions)
+
 ## [2026-03-11]
 ### Added
 - GitHub Pages deployment job in `.github/workflows/playwright.yml` — publishes the latest Playwright HTML report to GitHub Pages after every push to `main`/`develop`

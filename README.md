@@ -4,6 +4,63 @@ End-to-end test automation suite for the MAST application. Covers UI tests (Play
 
 ---
 
+## Prerequisites
+
+- [Node.js](https://nodejs.org/) v18 or later
+- npm v9 or later (bundled with Node.js)
+- Git
+
+---
+
+## Setup
+
+### 1. Clone the repository
+
+```bash
+git clone <repository-url>
+cd mast-automation
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Install Playwright browsers
+
+```bash
+npx playwright install
+```
+
+> To install only the browsers you need:
+> ```bash
+> npx playwright install chromium
+> npx playwright install firefox
+> npx playwright install webkit
+> ```
+
+### 4. Configure test data
+
+Credentials and environment URLs are already pre-configured in `testData/`. No additional setup is required for the default `sandbox` environment.
+
+To point at a different environment, set `TEST_ENV` before running tests:
+
+```bash
+export TEST_ENV=stage   # macOS / Linux
+$env:TEST_ENV="stage"   # Windows PowerShell
+```
+
+### 5. Verify the setup
+
+```bash
+npx playwright test --project=chromium src/ui/specs/auth/login.spec.ts
+```
+
+A passing run confirms that browsers, dependencies, and test data are all wired up correctly.
+
+---
+
 ## Tech Stack
 
 | Tool | Version | Purpose |
